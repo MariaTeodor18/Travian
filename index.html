@@ -22,23 +22,53 @@
     </div>
     <br />
     <div class="text-center">
-	<button type="button" class="btn btn-medium btn-success">
+	<button id="feedNow" type="button" class="btn btn-medium btn-success">
 		<a href="/feednow" style="text-decoration: none; color: black">
 			Feed Now!
 		</a>
-	    </button>
-    	<br /><br />
-    	<button type="button" class="btn btn-success">
+	</button>
+	<p id="successMsg" style="display: inline">Food has been delivered to your pet with success!</p>
+    	
+	<br /><br />
+    	<button id="autofeed" type="button" class="btn btn-success">
             	<a href="/autofeed" style="text-decoration: none; color: black">
                         Auto Feed!
             	</a>
         </button>
+
+	<button id="stopfeed" type="button" class="btn btn-danger">
+                <a href="/stop" style="text-decoration: none; color: black">
+                        Stop Auto Feed!
+                </a>
+        </button>
+
     </div>	
     
     <script type="text/javascript">
 
-        // application code here!
+        $("#autofeed").click(function() {	
+    		$(this).attr("disabled", true);
+		$("#stopfeed").show();
+		localStorage.setItem("button-state", 'true');
+    	});
 
+
+	$("#stopfeed").click(function() {
+		$("#autofeed").attr('disabled', false);
+		$("#stopfeed").hide();
+		localStorage.clear("button-state");
+	});
+
+	$("#feedNow").click(function() {
+		$("#successMsg").show();
+	});
+
+	$(window).load(function() {
+
+		$("#successMsg").hide();
+		var buttonState=Boolean(localStorage.getItem("button-state"));
+		if(buttonState == false)
+			$("#stopfeed").hide();
+		$("#autofeed").attr('disabled', buttonState);
+	});
     </script>
-</body>
-</html>
